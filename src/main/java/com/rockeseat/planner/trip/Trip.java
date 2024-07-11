@@ -22,17 +22,43 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "trips")
 public class Trip {
-	
-	
+
+	public Trip() {
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
-	
+
 	@Column(name = "destino", nullable = false)
 	private String destination;
-	
+
 	public UUID getId() {
 		return id;
+	}
+
+	@Column(name = "starts_at", nullable = false)
+	private LocalDateTime startsAt;
+
+	@Column(name = "ends_at", nullable = false)
+	private LocalDateTime ends_at;
+
+	@Column(name = "is_confirmed", nullable = false)
+	private boolean isConfirmed;
+
+	@Column(name = "owner_name", nullable = false)
+	private String ownerName;
+
+	@Column(name = "owner_email", nullable = false)
+	private String ownerEmail;
+
+	public Trip(TripRequestPayLoad data) {
+		this.destination = data.destination();
+		this.isConfirmed = false;
+		this.ownerEmail = data.owner_email();
+		this.ownerName = data.owner_name();
+		this.startsAt = LocalDateTime.parse(data.starts_at(), DateTimeFormatter.ISO_DATE_TIME);
+		this.ends_at = LocalDateTime.parse(data.ends_at(), DateTimeFormatter.ISO_DATE_TIME);
 	}
 
 	public void setId(UUID id) {
@@ -86,31 +112,5 @@ public class Trip {
 	public void setOwnerEmail(String ownerEmail) {
 		this.ownerEmail = ownerEmail;
 	}
-
-	@Column(name = "starts_at", nullable = false)
-	private LocalDateTime startsAt;
-	
-	@Column(name = "ends_at", nullable = false)
-	private LocalDateTime ends_at;
-	
-	@Column(name = "is_confirmed", nullable = false)
-	private boolean isConfirmed;
-	
-	@Column(name = "owner_name", nullable = false)
-	private String ownerName;
-	
-	@Column(name = "owner_email", nullable = false)
-	private String ownerEmail;
-	
-	public Trip(TripRequestPayLoad data) {
-		this.destination = data.destination();
-		this.isConfirmed = false;
-		this.ownerEmail = data.owner_email();
-		this.ownerName = data.owner_name();
-		this.startsAt = LocalDateTime.parse(data.starts_at(), DateTimeFormatter.ISO_DATE_TIME);
-		this.ends_at = LocalDateTime.parse(data.ends_at(), DateTimeFormatter.ISO_DATE_TIME);
-	}
-	
-	
 
 }
